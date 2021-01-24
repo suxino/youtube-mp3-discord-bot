@@ -1,3 +1,4 @@
+import express from "express";
 import { Client } from "discord.js";
 import handleDownload from "./downloader";
 import hsp from "heroku-self-ping";
@@ -24,4 +25,15 @@ client.on("message", async (message) => {
 
 client.login(process.env.BOT_TOKEN).catch(() => {
   console.log("Unable to login to discord");
+});
+
+const app = express();
+const port = process.env.PORT || 3000;
+
+app.get("/", (req, res) => {
+  res.send("Hello World!");
+});
+
+app.listen(port, () => {
+  console.log(`Example app listening at http://localhost:${port}`);
 });
