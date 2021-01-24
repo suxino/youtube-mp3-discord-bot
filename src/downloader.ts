@@ -24,7 +24,7 @@ export default async (message: Message) => {
     ffmpegPath: pathToFfmpeg, // FFmpeg binary location
     outputPath: folderName, // Output file location (default: the home directory)
     youtubeVideoQuality: "highestaudio", // Desired video quality (default: highestaudio)
-    queueParallelism: 2, // Download parallelism (default: 1)
+    queueParallelism: 30, // Download parallelism (default: 1)
     progressTimeout: 2000, // Interval in ms for the progress reports (default: 1000)
     allowWebm: false, // Enable download from WebM sources (default: false)
   });
@@ -46,6 +46,8 @@ export default async (message: Message) => {
     });
 
     lineReader.on("line", (line: string) => {
+      if (line === "") return;
+
       const youtubeId = new URL(line).searchParams.get("v");
       if (youtubeId !== null) {
         lines++;

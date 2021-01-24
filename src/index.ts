@@ -1,5 +1,10 @@
 import { Client } from "discord.js";
 import handleDownload from "./downloader";
+import hsp from "heroku-self-ping";
+
+if (process.env.NODE_ENV === "production") {
+  hsp(process.env.APP_URL);
+}
 
 const client = new Client();
 const prefix = "!";
