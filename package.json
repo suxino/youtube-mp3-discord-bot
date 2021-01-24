@@ -4,7 +4,8 @@
   "description": "",
   "main": "src/index.ts",
   "scripts": {
-    "start": "nodemon --watch src/index.ts",
+    "dev": "nodemon --watch src/index.ts",
+    "start": "node ./dist/index.js",
     "build": "rimraf dist && tsc"
   },
   "author": "Matus Tuhy <matustuhy@gmail.com>",
