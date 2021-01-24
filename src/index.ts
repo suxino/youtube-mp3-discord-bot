@@ -1,4 +1,5 @@
 import express from "express";
+import path from "path";
 import { Client } from "discord.js";
 import handleDownload from "./downloader";
 import hsp from "heroku-self-ping";
@@ -33,6 +34,8 @@ const port = process.env.PORT || 3000;
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
+
+app.use("/archives", express.static(path.join(__dirname, "..", "archives")));
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);

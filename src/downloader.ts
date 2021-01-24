@@ -5,7 +5,7 @@ import https from "https";
 import readline from "readline";
 import makeArchive from "./archive";
 import { MessageAttachment, Message } from "discord.js";
-import { cleanup, prepareOutDir } from "./file-management";
+import { cleanup, createDirIfNotExist, prepareOutDir } from "./file-management";
 
 export default async (message: Message) => {
   const attachment = message.attachments.first();
@@ -16,13 +16,15 @@ export default async (message: Message) => {
   }
 
   const uuid = uuidv4();
-  const folderName = `./out/${uuid}`;
+  const mp3path = `./out/${uuid}`;
+  const zipPath = `./archives/${uuid}.zip`;
 
   await prepareOutDir(uuid);
+  await createDirIfNotExist("archives");
 
   const YD = new YoutubeMp3Downloader({
     ffmpegPath: pathToFfmpeg, // FFmpeg binary location
-    outputPath: folderName, // Output file location (default: the home directory)
+    outputPath: mp3path, // Output file location (default: the home directory)
     youtubeVideoQuality: "highestaudio", // Desired video quality (default: highestaudio)
     queueParallelism: 30, // Download parallelism (default: 1)
     progressTimeout: 2000, // Interval in ms for the progress reports (default: 1000)
@@ -60,8 +62,8 @@ export default async (message: Message) => {
 
       if (finishedDownloads === lines) {
         console.log("Finished all");
-        await makeArchive(folderName, `${uuid}.zip`);
-        message.reply("Finished all", new MessageAttachment(`./${uuid}.zip`));
+        await makeArchive(mp3path, zipPath);
+        message.reply(`${process.env.APP_URL}/archives/${uuid}.zip`);
         await cleanup(uuid);
       }
     });
