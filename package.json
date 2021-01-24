@@ -7,7 +7,7 @@
     "start": "nodemon --watch src/index.ts",
     "build": "rimraf dist && tsc"
   },
-  "author": "",
+  "author": "Matus Tuhy <matustuhy@gmail.com>",
   "license": "ISC",
   "dependencies": {
     "archiver": "^5.2.0",
