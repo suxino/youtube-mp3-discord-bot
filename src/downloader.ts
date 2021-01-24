@@ -4,7 +4,7 @@ import pathToFfmpeg from "ffmpeg-static";
 import https from "https";
 import readline from "readline";
 import makeArchive from "./archive";
-import { MessageAttachment, Message } from "discord.js";
+import { Message } from "discord.js";
 import { cleanup, createDirIfNotExist, prepareOutDir } from "./file-management";
 
 export default async (message: Message) => {
@@ -31,9 +31,11 @@ export default async (message: Message) => {
     allowWebm: false, // Enable download from WebM sources (default: false)
   });
 
-  YD.on("progress", (progress) => {
-    console.log(JSON.stringify(progress));
-  });
+  if (process.env.NODE_ENV !== "production") {
+    YD.on("progress", (progress) => {
+      console.log(JSON.stringify(progress));
+    });
+  }
 
   YD.on("error", (err) => {
     console.error(err);
